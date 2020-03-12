@@ -1,0 +1,39 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "expo": "~36.0.2",
+    "react": "~16.13.0",
+    "react-dom": "~16.13.0",
+    "react-native": "0.61.5",
+    "react-native-screens": "2.3.0",
+    "react-native-web": "~0.12.2",
+    "react-router-dom": "^5.1.2",
+    "react-router-native": "^5.1.2",
+    "expo-constants": "~8.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@types/react": "~16.9.23",
+    "@types/react-native": "~0.61.21",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/react-router-native": "^5.1.0",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "babel-preset-expo": "~8.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-universe": "^2.3.0",
+    "prettier": "^1.19.1",
+    "typescript": "~3.8.3"
+  },
+  "private": true,
+  "eslintConfig": {
+    "extends": "universe"
+  }
+}
