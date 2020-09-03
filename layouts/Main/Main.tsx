@@ -1,56 +1,74 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { withRouter, RouteComponentProps } from "../../react-router";
-import BottomTabNavigator from "../../navigation/BottomTabNavigator";
-import Constants from "expo-constants";
+import React from 'react'
+import { useHistory } from '../../react-router'
+import FooterTabNavigator from '../../navigation/FooterTabNavigator'
+import {
+    Container,
+    Header,
+    Content,
+    Footer,
+    Left,
+    Button,
+    Icon,
+    Title,
+    Right,
+    Body,
+} from 'native-base'
+import { FooterRoutes } from '../../navigation/FooterRoutes'
+import { useFhirContext } from 'smartmarkers'
 
 interface MainProps {
-  children: React.ReactNode;
+    children: React.ReactNode
 }
 
-interface RouteParams {
-  example: string;
+const Main: React.FC<MainProps> = ({ ...props }) => {
+    const { children } = props
+    const history = useHistory()
+    const { user, isAuthenticated } = useFhirContext()
+    const isPatient = user && user.resourceType.toLowerCase() == 'patient'
+
+    const footerRoutePaths = FooterRoutes.map(route => route.path)
+    const isFooterRoute = footerRoutePaths.includes(history.location.pathname)
+    const isLoginOrNotFound = ['/not-found', '/login'].includes(history.location.pathname)
+    const showBackButton = !isFooterRoute && !isLoginOrNotFound
+    const onPress = () => {
+        history.goBack()
+    }
+
+    const onPersonPress = () => {
+        history.push('/settings')
+    }
+
+    return (
+        <Container>
+            <Header noLeft={isFooterRoute}>
+                {showBackButton && (
+                    <Left>
+                        <Button transparent onPress={onPress}>
+                            <Icon name="md-arrow-back" />
+                        </Button>
+                    </Left>
+                )}
+                <Body>
+                    <Title style={{ alignSelf: 'center' }}>
+                        {isPatient ? 'Patient App' : 'Practitioner App'}
+                    </Title>
+                </Body>
+                {isAuthenticated && (
+                    <Right>
+                        <Button transparent onPress={onPersonPress}>
+                            <Icon name="person" />
+                        </Button>
+                    </Right>
+                )}
+            </Header>
+            <Content>{children}</Content>
+            {isFooterRoute && (
+                <Footer>
+                    <FooterTabNavigator />
+                </Footer>
+            )}
+        </Container>
+    )
 }
 
-const Main: React.FC<MainProps & RouteComponentProps<RouteParams>> = ({
-  ...props
-}) => {
-  const { children, location, history } = props;
-  const navigateTo = (path: string) => {
-    history.push(path);
-  };
-  return (
-    <View style={styles.container}>
-      <View style={styles.statusBar} />
-      <View style={styles.childrenContainer}>{children}</View>
-      <View style={styles.bottomNavBar}>
-        <BottomTabNavigator
-          currentPath={location.pathname}
-          navigateTo={navigateTo}
-        />
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  statusBar: {
-    backgroundColor: "#C2185B",
-    height: Constants.statusBarHeight
-  },
-  container: {
-    flex: 1,
-    flexDirection: "column"
-  },
-  childrenContainer: {
-    flex: 1
-  },
-  bottomNavBar: {
-    height: 80
-  }
-});
-
-export default withRouter<
-  MainProps & RouteComponentProps<RouteParams>,
-  React.FC<MainProps & RouteComponentProps<RouteParams>>
->(Main);
+export default Main

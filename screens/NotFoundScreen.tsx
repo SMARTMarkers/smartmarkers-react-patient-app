@@ -1,19 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from 'react'
+import { Text } from 'native-base'
 
 const NotFoundScreen: React.FC<any> = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Page Not Found</Text>
-    </View>
-  );
-};
+    return <Text>Page Not Found</Text>
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff"
-  }
-});
-
-export default NotFoundScreen;
+export default NotFoundScreen

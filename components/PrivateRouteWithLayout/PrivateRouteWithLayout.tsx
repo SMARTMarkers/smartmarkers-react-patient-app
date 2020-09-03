@@ -1,15 +1,20 @@
 import React from 'react'
-import { Route } from '../../react-router'
+import { Route, Redirect } from '../../react-router'
 
 interface RouteWithLayoutProps {
     component: React.ComponentClass<any> | React.FunctionComponent<any>
     layout: React.ComponentClass<any> | React.FunctionComponent<any>
     path: string
     exact?: boolean
+    isAuthenticated: boolean
 }
 
-const RouteWithLayout: React.FC<RouteWithLayoutProps> = ({ ...props }) => {
-    const { layout: Layout, component: Component, ...rest } = props
+const PrivateRouteWithLayout: React.FC<RouteWithLayoutProps> = ({ ...props }) => {
+    const { layout: Layout, component: Component, isAuthenticated, ...rest } = props
+
+    if (!isAuthenticated) {
+        return <Redirect to="/login" />
+    }
 
     return (
         <Route
@@ -23,4 +28,4 @@ const RouteWithLayout: React.FC<RouteWithLayoutProps> = ({ ...props }) => {
     )
 }
 
-export default RouteWithLayout
+export default PrivateRouteWithLayout

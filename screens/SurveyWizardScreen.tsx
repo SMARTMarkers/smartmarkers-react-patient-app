@@ -1,20 +1,27 @@
 import React from 'react'
 import { useParams } from '../react-router'
 import { ExampleType, ExampleMap } from '../example'
-
-import { Form, FormData, IQuestionnaireResponse } from 'smartmarkers'
+import { Form, FormMode, FormData, IQuestionnaireResponse } from 'smartmarkers'
+import { View } from 'native-base'
 
 interface RouteParams {
     example: string
 }
 
-const SurveyScreen: React.FC<any> = props => {
+const SurveyWizardScreen: React.FC<any> = props => {
     const { example } = useParams<RouteParams>()
     const questionnaireData = ExampleMap[example as ExampleType]
+
     const onSubmit = (formData: FormData, response: IQuestionnaireResponse) => {
+        console.log({ formData, response })
         alert(JSON.stringify(response))
     }
-    return <Form questionnaire={questionnaireData} onSubmit={onSubmit} />
+
+    return (
+        <View>
+            <Form questionnaire={questionnaireData} mode={FormMode.Wizard} onSubmit={onSubmit} />
+        </View>
+    )
 }
 
-export default SurveyScreen
+export default SurveyWizardScreen

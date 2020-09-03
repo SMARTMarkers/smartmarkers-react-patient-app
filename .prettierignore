@@ -1,0 +1,6 @@
+dist
+node_modules
+build
+coverage
+.expo
+.expo-shared
