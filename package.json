@@ -24,7 +24,7 @@
         "react-native-web": "~0.11.7",
         "react-router-dom": "^5.2.0",
         "react-router-native": "^5.2.0",
-        "smartmarkers": "file:../smartmarkers-react"
+        "smartmarkers": "file:.."
     },
     "devDependencies": {
         "@babel/core": "^7.8.6",

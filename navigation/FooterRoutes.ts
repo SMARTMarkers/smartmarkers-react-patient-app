@@ -2,11 +2,11 @@ export const FooterRoutes = [
     {
         name: 'Dashboard',
         path: '/dashboard',
-        icon: 'md-square',
+        icon: 'albums',
     },
     {
         name: 'My Surveys',
         path: '/completed',
-        icon: 'md-square-outline',
+        icon: 'paper',
     },
 ]
