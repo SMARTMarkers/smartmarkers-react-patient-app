@@ -48,6 +48,7 @@ const HistoryScreen: React.FC<any> = props => {
                 <Text>HISTORY</Text>
             </ListItem>
             <ReportList
+                useClientPatientId={false}
                 renderItem={renderItem}
                 type={ReportType.QuestionnaireResponse}
                 onItemPress={onItemPress}
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     startButton: {
         backgroundColor: '#499f67',
         flexGrow: 0,
-        width: 'max-content',
+        alignSelf: 'flex-start',
         marginLeft: 15,
         marginTop: 15,
     },

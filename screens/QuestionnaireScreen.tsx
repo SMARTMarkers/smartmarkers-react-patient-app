@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import { View, Spinner } from 'native-base'
 import { useParams, useHistory } from '../react-router'
 import { useFhirContext, SessionWizard, Task } from 'smartmarkers'
@@ -10,15 +10,18 @@ interface RouteParams {
 const QuestionnaireScreen: React.FC<any> = props => {
     const { rid } = useParams<RouteParams>()
     const history = useHistory()
-    const { server } = useFhirContext()
+    const { server, user } = useFhirContext()
     const [isReady, setIsReady] = React.useState(false)
     const [task, setTask] = React.useState<Task | null>(null)
+
+    console.log(user)
+    const patientId = user && user.resourceType === 'Patient' ? user.id : undefined
 
     React.useEffect(() => {
         if (!isReady) {
             const loadItem = async () => {
                 if (server) {
-                    const task = await server.getTaskByRequestId(rid)
+                    const task = await server.getTaskByRequestId(rid, patientId)
                     setTask(task)
                 }
                 setIsReady(true)

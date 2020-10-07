@@ -1,8 +1,12 @@
 import React from 'react'
-import { useParams } from '../react-router'
+import { useParams, useHistory } from '../react-router'
 import { View, Text, Spinner, ListItem, Body, List, Right, Icon } from 'native-base'
-import { useFhirContext, Report, QuestionnaireResponse, QuestionnaireResponseView } from 'smartmarkers'
-import { useHistory } from 'react-router-dom'
+import {
+    useFhirContext,
+    Report,
+    QuestionnaireResponse,
+    QuestionnaireResponseView,
+} from 'smartmarkers'
 
 interface RouteParams {
     qrId: string
@@ -40,11 +44,8 @@ const ResponseScreen: React.FC<any> = props => {
             {item && item.resourceType === 'QuestionnaireResponse' && (
                 <QuestionnaireResponseView response={item as QuestionnaireResponse} />
             )}
-            <List>
-                <ListItem
-                    style={{ marginTop: '30px', borderTopWidth: 1 }}
-                    onPress={goToFhirResource}
-                >
+            <List style={{ paddingTop: 30 }}>
+                <ListItem style={{ borderTopWidth: 1 }} onPress={goToFhirResource}>
                     <Body>
                         <Text>FHIR Resource</Text>
                     </Body>

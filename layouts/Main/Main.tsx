@@ -41,7 +41,7 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
     return (
         <Container>
             <Header style={{ backgroundColor: '#002a78' }} noLeft={isFooterRoute}>
-                <Left style={{ minWidth: 140 }}>
+                <Left style={{ flexGrow: 1 }}>
                     {showBackButton && (
                         <Button transparent onPress={onPress}>
                             <Icon name="md-arrow-back" />
@@ -49,17 +49,17 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
                     )}
                 </Left>
                 <Body style={{ flexGrow: 5 }}>
-                    <Title style={{ alignSelf: 'center' }}>
-                        {isPatient ? '' : 'Practitioner App'}
-                    </Title>
+                    {/* <Title style={{ alignSelf: 'center' }}>
+                        {isPatient ? 'Patient' : 'Practitioner App'}
+                    </Title> */}
                 </Body>
-                {isAuthenticated && (
-                    <Right>
+                <Right style={{ flexGrow: 1 }}>
+                    {isAuthenticated && (
                         <Button transparent onPress={onPersonPress}>
                             <Icon name="person" />
                         </Button>
-                    </Right>
-                )}
+                    )}
+                </Right>
             </Header>
             <Content>{children}</Content>
             {isFooterRoute && (
