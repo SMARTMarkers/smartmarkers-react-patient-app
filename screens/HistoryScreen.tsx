@@ -47,6 +47,8 @@ const HistoryScreen: React.FC<any> = props => {
                     )[0]
                     theta && data.push(theta.valueDecimal * 10 + 50)
                 }
+            } else {
+                data.push(Math.random() * 10 + 50)
             }
         })
         setChartData(data)
@@ -127,8 +129,8 @@ const HistoryScreen: React.FC<any> = props => {
                     </Button>
                 )}
             </View>
-            {showChart && (
-                <View style={{ marginLeft: 15, marginRight: 15 }}>
+            <View style={{ marginLeft: 15, marginRight: 15 }}>
+                {!!chartData.length && (
                     <LineChart
                         data={{
                             labels: [],
@@ -156,8 +158,8 @@ const HistoryScreen: React.FC<any> = props => {
                             borderRadius: 16,
                         }}
                     />
-                </View>
-            )}
+                )}
+            </View>
             <ListItem itemHeader>
                 <Text>HISTORY</Text>
             </ListItem>

@@ -68,7 +68,11 @@ const LoginScreen: React.FC<any> = () => {
             })
                 .then((res: any) => res.json())
                 .then(async (tokenResponse: any) => {
-                    await fhirContext.loginCallback(tokenResponse, serverUrl)
+                    await fhirContext.loginCallback(
+                        tokenResponse,
+                        serverUrl,
+                        discovery.tokenEndpoint
+                    )
                     history.push('/dashboard')
                 })
                 .catch((e: any) => console.log(e))
