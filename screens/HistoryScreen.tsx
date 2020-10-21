@@ -15,11 +15,12 @@ interface RouteParams {
     completed: string
     srId: string
     qId: string
+    instrumentTitle: string
 }
 
 const HistoryScreen: React.FC<any> = props => {
     const { user, server } = useFhirContext()
-    const { srId, qId, completed } = useParams<RouteParams>()
+    const { srId, qId, completed, instrumentTitle } = useParams<RouteParams>()
     const history = useHistory()
 
     const [isReady, setIsReady] = React.useState(false)
@@ -83,7 +84,8 @@ const HistoryScreen: React.FC<any> = props => {
     const renderItem = (item: Report, key: any) => (
         <ListItem key={item.id} onPress={() => onItemPress(item)} style={styles.listItem}>
             <Body>
-                <Text style={styles.title}>{item.getTitle()}</Text>
+                
+                <Text style={styles.title}>{ new Date(item.meta?.lastUpdated).toLocaleDateString('en-US')}</Text>
                 <Text note style={styles.note}>
                     {item.getNote()}
                 </Text>
@@ -114,15 +116,15 @@ const HistoryScreen: React.FC<any> = props => {
 
     return (
         <List>
-            <View
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    margin: 15,
-                }}
-            >
+
+
+            <View style={{ margin: 15 }}>
+            <Text style={styles.headerTitle}>{ instrumentTitle }</Text>
+            <Text note>Questionnaire</Text>
+
+            
+
+            
                 {completed == 'false' && (
                     <Button onPress={startQuest} style={styles.startButton}>
                         <Text>Start questionnaire</Text>
@@ -161,7 +163,7 @@ const HistoryScreen: React.FC<any> = props => {
                 )}
             </View>
             <ListItem itemHeader>
-                <Text>HISTORY</Text>
+                <Text>RESPONSES</Text>
             </ListItem>
             {getRequestList()}
         </List>
@@ -179,8 +181,9 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         marginRight: 15,
     },
-    title: { color: '#002a78', fontWeight: 'bold' },
-    note: { color: '#a4a5a6' },
+    title: { textAlign: 'left', color: '#002a78', fontWeight: 'bold' },
+    note: { textAlign: 'left', color: '#a4a5a6' },
+    headerTitle: { textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: '#575757' },    
     startButton: {
         backgroundColor: '#499f67',
         flexGrow: 0,

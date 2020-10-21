@@ -9,7 +9,7 @@ const DashboardScreen: React.FC<any> = () => {
     const history = useHistory()
 
     const onItemPress = async (item: Task) => {
-        history.push(`history/${item.request?.id}/${item.instrument?.id}/false`)
+        history.push(`history/${item.request?.id}/${item.instrument?.id}/false/${item.getTitle()}`)
     }
 
     const renderItem = (
@@ -20,15 +20,13 @@ const DashboardScreen: React.FC<any> = () => {
     ) => (
         <ListItem key={key} onPress={() => onItemPress(item)} noBorder style={styles.listItem}>
             <Body>
-                <Text style={styles.title}>{item.getTitle()}</Text>
-                <Text note style={styles.note}>
-                    {item.getNote()}{' '}
-                    {item.schedule ? TaskScheduleStatus[item.schedule?.status] : ''}
-                </Text>
-            </Body>
-            <Right>
-                <Icon style={{ color: '#002a78' }} active name="arrow-forward" />
-            </Right>
+                <Text note>#{item.request.id} | { new Date(item.request?.meta?.lastUpdated).toLocaleDateString('en-US')} </Text>        
+                <Text>Instrument: <Text style={styles.title}>{item.getTitle()}</Text></Text>
+                <Text>Requested by: { item.request.getRequester() } </Text>
+          </Body>
+          <Right>
+                 <Icon style={{ color: '#002a78' }} active name="arrow-forward" />
+          </Right>
         </ListItem>
     )
 
@@ -36,7 +34,7 @@ const DashboardScreen: React.FC<any> = () => {
         <List>
             <ListItem noBorder noIndent>
                 <Body>
-                    <Text style={styles.patientName}>Hello, {user?.name}</Text>
+                    <Text style={styles.patientName}>Assessment Requests</Text>
                 </Body>
             </ListItem>
             <RequestList
@@ -50,11 +48,11 @@ const DashboardScreen: React.FC<any> = () => {
                 ]}
             />
 
-            <ListItem onPress={() => history.push('/manual')}>
+            {/*<ListItem onPress={() => history.push('/manual')}>
                 <Body>
                     <Text>Manual DEMO</Text>
                 </Body>
-            </ListItem>
+            </ListItem>*/}
         </List>
     )
 }
@@ -72,5 +70,5 @@ const styles = StyleSheet.create({
     },
     title: { color: '#002a78', fontWeight: 'bold' },
     note: { color: '#a4a5a6' },
-    patientName: { textAlign: 'center', fontSize: 20, fontWeight: 'bold', color: '#575757' },
+    patientName: { textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: '#575757' },
 })

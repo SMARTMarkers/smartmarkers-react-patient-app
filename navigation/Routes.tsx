@@ -82,7 +82,7 @@ const Routes: React.FC = () => {
                 component={HistoryScreen}
                 exact
                 layout={MainLayout}
-                path="/history/:srId/:qId/:completed"
+                path="/history/:srId/:qId/:completed/:instrumentTitle"
                 isAuthenticated={fhirContext.isAuthenticated}
             />
             <PrivateRouteWithLayout

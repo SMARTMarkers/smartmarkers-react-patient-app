@@ -49,9 +49,9 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
                     )}
                 </Left>
                 <Body style={{ flexGrow: 5 }}>
-                    {/* <Title style={{ alignSelf: 'center' }}>
-                        {isPatient ? 'Patient' : 'Practitioner App'}
-                    </Title> */}
+                    {<Title style={{ alignSelf: 'center' }}>
+                        Hello, {user?.name}
+                    </Title>}
                 </Body>
                 <Right style={{ flexGrow: 1 }}>
                     {isAuthenticated && (
