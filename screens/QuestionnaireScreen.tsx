@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react'
-import { View, Spinner } from 'native-base'
+import { View, Spinner, Text } from 'native-base'
 import { useParams, useHistory } from '../react-router'
 import { useFhirContext, SessionWizard, Task } from 'smartmarkers'
 
@@ -14,8 +14,9 @@ const QuestionnaireScreen: React.FC<any> = props => {
     const [isReady, setIsReady] = React.useState(false)
     const [task, setTask] = React.useState<Task | null>(null)
 
-    console.log(user)
     const patientId = user && user.resourceType === 'Patient' ? user.id : undefined
+
+    const onCancel = () => history.push('/')
 
     React.useEffect(() => {
         if (!isReady) {
@@ -34,11 +35,30 @@ const QuestionnaireScreen: React.FC<any> = props => {
         return <Spinner />
     }
 
+    if (!task?.instrument) {
+        const instrumentName = task?.getTitle()
+        return (
+            <Text
+                style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    color: '#f22e3b',
+                    marginTop: 25,
+                    fontWeight: 'bold',
+                    fontSize: 24,
+                }}
+            >
+                {`Instrument ${instrumentName ? `${instrumentName} ` : ''}could not be resolved`}
+            </Text>
+        )
+    }
+
     if (task) {
         return (
             <SessionWizard
                 tasks={[task]}
                 onCompleted={() => history.push(`/dashboard`)}
+                onCancel={onCancel}
             ></SessionWizard>
         )
     } else {

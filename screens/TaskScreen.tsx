@@ -18,7 +18,7 @@ interface RouteParams {
     instrumentTitle: string
 }
 
-const HistoryScreen: React.FC<any> = props => {
+const TaskScreen: React.FC<any> = props => {
     const { user, server } = useFhirContext()
     const { srId, qId, completed, instrumentTitle } = useParams<RouteParams>()
     const history = useHistory()
@@ -26,7 +26,6 @@ const HistoryScreen: React.FC<any> = props => {
     const [isReady, setIsReady] = React.useState(false)
     const [items, setItems] = React.useState<Report[] | undefined>([])
     const [chartData, setChartData] = useState([])
-    const [showChart, setShowChart] = useState(false)
 
     useEffect(() => {
         if (!items && !items!.length) return
@@ -34,7 +33,6 @@ const HistoryScreen: React.FC<any> = props => {
         items?.forEach((report: Report) => {
             const questionnaireResponse = report as QuestionnaireResponse
             if (questionnaireResponse.extension) {
-                setShowChart(true)
                 const scores: any = questionnaireResponse.extension.filter(
                     (el: any) =>
                         el.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-scores'
@@ -84,8 +82,9 @@ const HistoryScreen: React.FC<any> = props => {
     const renderItem = (item: Report, key: any) => (
         <ListItem key={item.id} onPress={() => onItemPress(item)} style={styles.listItem}>
             <Body>
-                
-                <Text style={styles.title}>{ new Date(item.meta?.lastUpdated).toLocaleDateString('en-US')}</Text>
+                <Text style={styles.title}>
+                    {new Date(item.meta?.lastUpdated as string).toLocaleDateString('en-US')}
+                </Text>
                 <Text note style={styles.note}>
                     {item.getNote()}
                 </Text>
@@ -116,15 +115,9 @@ const HistoryScreen: React.FC<any> = props => {
 
     return (
         <List>
-
-
             <View style={{ margin: 15 }}>
-            <Text style={styles.headerTitle}>{ instrumentTitle }</Text>
-            <Text note>Questionnaire</Text>
-
-            
-
-            
+                <Text style={styles.headerTitle}>{instrumentTitle}</Text>
+                <Text note>Questionnaire</Text>
                 {completed == 'false' && (
                     <Button onPress={startQuest} style={styles.startButton}>
                         <Text>Start questionnaire</Text>
@@ -170,7 +163,7 @@ const HistoryScreen: React.FC<any> = props => {
     )
 }
 
-export default HistoryScreen
+export default TaskScreen
 
 const styles = StyleSheet.create({
     listItem: {
@@ -183,7 +176,7 @@ const styles = StyleSheet.create({
     },
     title: { textAlign: 'left', color: '#002a78', fontWeight: 'bold' },
     note: { textAlign: 'left', color: '#a4a5a6' },
-    headerTitle: { textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: '#575757' },    
+    headerTitle: { textAlign: 'left', fontSize: 20, fontWeight: 'bold', color: '#575757' },
     startButton: {
         backgroundColor: '#499f67',
         flexGrow: 0,

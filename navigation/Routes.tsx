@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Redirect, Route, useHistory } from '../react-router'
+import { Switch, Redirect } from '../react-router'
 import { RouteWithLayout, PrivateRouteWithLayout } from '../components'
 import { Main as MainLayout } from '../layouts'
 
@@ -13,56 +13,27 @@ import {
     LoginScreen,
     QuestionnaireScreen,
     CompletedScreen,
-    HistoryScreen,
+    TaskScreen,
     ResponseScreen,
     FhirResource,
-    PractitionerDashboardScreen,
-    ChoosePatientScreen,
-    CreateServiceRequestScreen,
 } from '../screens'
-import { useFhirContext, LoginCallback } from 'smartmarkers'
+import { useFhirContext } from 'smartmarkers'
 import ManualScreen from '../screens/ManualScreen'
 
 const Routes: React.FC = () => {
     const fhirContext = useFhirContext()
-    const history = useHistory()
-    const isPatient = fhirContext.user && fhirContext.user.resourceType.toLowerCase() == 'patient'
 
     return (
         <Switch>
             <Redirect exact from="/" to={`/dashboard`} />
             {fhirContext.isAuthenticated && <Redirect exact from="/login" to="/dashboard" />}
             <RouteWithLayout exact path="/login" component={LoginScreen} layout={MainLayout} />
-            {/* <Route
-                exact
-                path="/auth-callback"
-                render={() => (
-                    <LoginCallback
-                        redirect={() => {history.push("/dashboard");}}
-                        loginCallback={fhirContext.loginCallback}
-                    />
-                )}
-            /> */}
             <PrivateRouteWithLayout
-                component={isPatient ? DashboardScreen : PractitionerDashboardScreen}
+                component={DashboardScreen}
                 exact
                 layout={MainLayout}
                 path="/dashboard"
                 isAuthenticated={fhirContext.isAuthenticated}
-            />
-            <PrivateRouteWithLayout
-                component={ChoosePatientScreen}
-                exact
-                layout={MainLayout}
-                path="/choose-patient/:instrumentId"
-                isAuthenticated={fhirContext.isAuthenticated && !isPatient}
-            />
-            <PrivateRouteWithLayout
-                component={CreateServiceRequestScreen}
-                exact
-                layout={MainLayout}
-                path="/create-service-request/:instrumentId/:patientId/"
-                isAuthenticated={fhirContext.isAuthenticated && !isPatient}
             />
             <PrivateRouteWithLayout
                 component={SettingsScreen}
@@ -79,7 +50,7 @@ const Routes: React.FC = () => {
                 isAuthenticated={fhirContext.isAuthenticated}
             />
             <PrivateRouteWithLayout
-                component={HistoryScreen}
+                component={TaskScreen}
                 exact
                 layout={MainLayout}
                 path="/history/:srId/:qId/:completed/:instrumentTitle"
