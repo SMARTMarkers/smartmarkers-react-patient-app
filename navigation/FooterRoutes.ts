@@ -4,9 +4,9 @@ export const FooterRoutes = [
         path: '/dashboard',
         icon: 'albums',
     },
-    {
-        name: 'My Surveys',
-        path: '/completed',
-        icon: 'paper',
-    },
+    // {
+    //     name: 'My Surveys',
+    //     path: '/completed',
+    //     icon: 'paper',
+    // },
 ]

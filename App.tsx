@@ -10,7 +10,7 @@ import { serverUrl } from './urls'
 
 const App: React.FC = () => {
     const [isReady, setIsReady] = useState(false)
-
+    
     React.useEffect(() => {
         const loadAssets = async () => {
             await Font.loadAsync({

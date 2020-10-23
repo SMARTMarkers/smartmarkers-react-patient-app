@@ -68,7 +68,11 @@ const LoginScreen: React.FC<any> = () => {
             })
                 .then((res: any) => res.json())
                 .then(async (tokenResponse: any) => {
-                    await fhirContext.loginCallback(tokenResponse, serverUrl)
+                    await fhirContext.loginCallback(
+                        tokenResponse,
+                        serverUrl,
+                        discovery.tokenEndpoint
+                    )
                     history.push('/dashboard')
                 })
                 .catch((e: any) => console.log(e))
@@ -76,10 +80,13 @@ const LoginScreen: React.FC<any> = () => {
     }, [response])
     return (
         <Form>
-            <Text style={{ alignSelf: 'center', padding: 32 }}>Login by pressing Login button</Text>
-            <Button full primary style={{ alignSelf: 'center', margin: 20 }} onPress={onLoginPress}>
-                <Text>Login</Text>
+            <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 24, fontWeight: 'bold', flexGrow: 1, color: '#002a78' }}>Patient Reported Outcomes</Text>
+            <Text style={{ alignSelf: 'center', marginTop: 5, fontSize: 24, fontWeight: 'bold', flexGrow: 1, color: '#002a78' }}>Patient Login</Text>
+            <Button full primary style={{ alignSelf: 'center', margin: 20, marginTop: 40 }} onPress={onLoginPress}>
+            <Text>Login to EHR</Text>
             </Button>
+            <Text style={{ alignSelf: 'center', marginTop: 35}}>powered by SMART Markers</Text>
+
         </Form>
     )
 }
