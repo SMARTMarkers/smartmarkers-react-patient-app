@@ -10,6 +10,9 @@ import {
 } from 'smartmarkers'
 import { Dimensions, StyleSheet } from 'react-native'
 import { LineChart } from 'react-native-chart-kit'
+import { useDispatch, useSelector } from 'react-redux'
+import { Store } from '../store/models'
+import { setReports, setSelectedReport } from '../store/main/actions'
 
 interface RouteParams {
     completed: string
@@ -22,15 +25,17 @@ const TaskScreen: React.FC<any> = props => {
     const { user, server } = useFhirContext()
     const { srId, qId, completed, instrumentTitle } = useParams<RouteParams>()
     const history = useHistory()
+    const reports = useSelector((store: Store) => store.root.reports)
+    const dispatch = useDispatch()
 
     const [isReady, setIsReady] = React.useState(false)
-    const [items, setItems] = React.useState<Report[] | undefined>([])
+    // const [items, setItems] = React.useState<Report[] | undefined>([])
     const [chartData, setChartData] = useState([])
 
     useEffect(() => {
-        if (!items && !items!.length) return
+        if (!reports && !reports!.length) return
         const data: any = []
-        items?.forEach((report: Report) => {
+        reports?.forEach((report: Report) => {
             const questionnaireResponse = report as QuestionnaireResponse
             if (questionnaireResponse.extension) {
                 const scores: any = questionnaireResponse.extension.filter(
@@ -51,7 +56,7 @@ const TaskScreen: React.FC<any> = props => {
             }
         })
         setChartData(data)
-    }, [items])
+    }, [reports])
 
     React.useEffect(() => {
         const loadItems = async () => {
@@ -63,7 +68,7 @@ const TaskScreen: React.FC<any> = props => {
                 )
                 const factory = new ReportFactory(server)
                 const reports = items.map((i: any) => factory.createReport(i))
-                setItems(reports)
+                dispatch(setReports(reports))
             }
 
             setIsReady(true)
@@ -72,6 +77,7 @@ const TaskScreen: React.FC<any> = props => {
     }, [srId, user, user?.id])
 
     const onItemPress = (item: Report) => {
+        dispatch(setSelectedReport(item))
         history.push(`/response/${item.id}`)
     }
 
@@ -96,12 +102,12 @@ const TaskScreen: React.FC<any> = props => {
     )
 
     const getRequestList = () => {
-        if (!isReady) {
+        if (!isReady && !reports.length) {
             return <Spinner />
         }
 
-        if (items?.length) {
-            return <>{items?.map((item, index) => renderItem(item, index))}</>
+        if (reports?.length) {
+            return <>{reports?.map((item, index) => renderItem(item, index))}</>
         } else {
             return (
                 <ListItem>
