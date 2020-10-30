@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useParams, useHistory } from '../react-router'
 import { List, ListItem, Text, Body, Right, Icon, Button, View, Spinner } from 'native-base'
-import {
-    useFhirContext,
-    Report,
-    ReportType,
-    ReportFactory,
-    QuestionnaireResponse,
-} from 'smartmarkers'
-import { Dimensions, StyleSheet } from 'react-native'
-import { LineChart } from 'react-native-chart-kit'
+import { useFhirContext, Report, ReportType, ReportFactory, PromisLineChart } from 'smartmarkers'
+import { StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Store } from '../store/models'
 import { setReports, setSelectedReport } from '../store/main/actions'
@@ -29,33 +22,6 @@ const TaskScreen: React.FC<any> = props => {
     const selectedTask = useSelector((store: Store) => store.root.selectedTask)
 
     const [isReady, setIsReady] = React.useState(false)
-    const [chartData, setChartData] = useState([])
-
-    useEffect(() => {
-        if (!reports && !reports!.length) return
-        const data: any = []
-        reports?.forEach((report: Report) => {
-            const questionnaireResponse = report as QuestionnaireResponse
-            if (questionnaireResponse.extension) {
-                const scores: any = questionnaireResponse.extension.filter(
-                    (el: any) =>
-                        el.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-scores'
-                )
-
-                if (scores[0]) {
-                    const theta = scores[0].extension.filter(
-                        (el: any) =>
-                            el.url ===
-                            'http://hl7.org/fhir/StructureDefinition/questionnaire-scores/theta'
-                    )[0]
-                    theta && data.push(theta.valueDecimal * 10 + 50)
-                }
-            } else {
-                data.push(Math.random() * 10 + 50)
-            }
-        })
-        setChartData(data)
-    }, [reports])
 
     React.useEffect(() => {
         const loadItems = async () => {
@@ -129,37 +95,7 @@ const TaskScreen: React.FC<any> = props => {
                     </Button>
                 )}
             </View>
-            <View style={{ marginLeft: 15, marginRight: 15 }}>
-                {!!chartData.length && (
-                    <LineChart
-                        data={{
-                            labels: [],
-                            datasets: [
-                                {
-                                    data: chartData,
-                                },
-                            ],
-                        }}
-                        width={Dimensions.get('window').width - 30} // from react-native
-                        height={220}
-                        chartConfig={{
-                            backgroundColor: '#e26a00',
-                            backgroundGradientFrom: '#fb8c00',
-                            backgroundGradientTo: '#ffa726',
-                            decimalPlaces: 2, // optional, defaults to 2dp
-                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                            style: {
-                                borderRadius: 16,
-                            },
-                        }}
-                        bezier
-                        style={{
-                            marginVertical: 8,
-                            borderRadius: 16,
-                        }}
-                    />
-                )}
-            </View>
+            <PromisLineChart responses={reports} />
             <ListItem itemHeader>
                 <Text>RESPONSES</Text>
             </ListItem>

@@ -4,17 +4,14 @@ import { List, ListItem, Text, Body, Right, Icon } from 'native-base'
 import { Task, TaskScheduleStatus } from 'smartmarkers'
 import { StyleSheet } from 'react-native'
 import RequestList from '../components/RequestList'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setReports, setSelectedTask } from '../store/main/actions'
-import { Store } from '../store/models'
 
 const DashboardScreen: React.FC<any> = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const selectedTask = useSelector((store: Store) => store.root.selectedTask)
 
     const onItemPress = async (item: Task) => {
-        if (item === selectedTask) return
         dispatch(setSelectedTask(item))
         dispatch(setReports([]))
         history.push(`history/${item.request?.id}/${item.instrument?.id}/false/${item.getTitle()}`)
