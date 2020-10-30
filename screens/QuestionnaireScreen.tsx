@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import { View, Spinner, Text } from 'native-base'
 import { useParams, useHistory } from '../react-router'
 import { useFhirContext, SessionWizard, Task } from 'smartmarkers'

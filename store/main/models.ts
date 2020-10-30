@@ -1,4 +1,4 @@
-import { IPatient, Report, Task } from 'smartmarkers'
+import { Report, Task } from 'smartmarkers'
 
 export interface TasksData {
     patientId: string
@@ -6,10 +6,8 @@ export interface TasksData {
 }
 
 export interface RootState {
-    // patients: IPatient[]
     tasks: Task[]
     reports: Report[]
     selectedReport: Report | null
-    // selectedPatient: IPatient | null
     selectedTask: Task | null
 }

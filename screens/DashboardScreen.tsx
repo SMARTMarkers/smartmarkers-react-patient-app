@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from '../react-router'
 import { List, ListItem, Text, Body, Right, Icon } from 'native-base'
-import { useFhirContext, Task, TaskScheduleStatus } from 'smartmarkers'
+import { Task, TaskScheduleStatus } from 'smartmarkers'
 import { StyleSheet } from 'react-native'
 import RequestList from '../components/RequestList'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +9,6 @@ import { setReports, setSelectedTask } from '../store/main/actions'
 import { Store } from '../store/models'
 
 const DashboardScreen: React.FC<any> = () => {
-    const { user } = useFhirContext()
     const history = useHistory()
     const dispatch = useDispatch()
     const selectedTask = useSelector((store: Store) => store.root.selectedTask)
@@ -18,7 +17,6 @@ const DashboardScreen: React.FC<any> = () => {
         if (item === selectedTask) return
         dispatch(setSelectedTask(item))
         dispatch(setReports([]))
-        // dispatch(setSelectedTask(item))
         history.push(`history/${item.request?.id}/${item.instrument?.id}/false/${item.getTitle()}`)
     }
 
@@ -59,12 +57,6 @@ const DashboardScreen: React.FC<any> = () => {
                     TaskScheduleStatus.Overdue,
                 ]}
             />
-
-            {/*<ListItem onPress={() => history.push('/manual')}>
-                <Body>
-                    <Text>Manual DEMO</Text>
-                </Body>
-            </ListItem>*/}
         </List>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from '../react-router'
 import { List, ListItem, Text, Body, Right, Icon, Button, View, Spinner } from 'native-base'
 import {
@@ -18,18 +18,17 @@ interface RouteParams {
     completed: string
     srId: string
     qId: string
-    instrumentTitle: string
 }
 
 const TaskScreen: React.FC<any> = props => {
     const { user, server } = useFhirContext()
-    const { srId, qId, completed, instrumentTitle } = useParams<RouteParams>()
+    const { srId, qId, completed } = useParams<RouteParams>()
     const history = useHistory()
     const reports = useSelector((store: Store) => store.root.reports)
     const dispatch = useDispatch()
+    const selectedTask = useSelector((store: Store) => store.root.selectedTask)
 
     const [isReady, setIsReady] = React.useState(false)
-    // const [items, setItems] = React.useState<Report[] | undefined>([])
     const [chartData, setChartData] = useState([])
 
     useEffect(() => {
@@ -122,7 +121,7 @@ const TaskScreen: React.FC<any> = props => {
     return (
         <List>
             <View style={{ margin: 15 }}>
-                <Text style={styles.headerTitle}>{instrumentTitle}</Text>
+                <Text style={styles.headerTitle}>{selectedTask?.instrument?.getTitle()}</Text>
                 <Text note>Questionnaire</Text>
                 {completed == 'false' && (
                     <Button onPress={startQuest} style={styles.startButton}>
