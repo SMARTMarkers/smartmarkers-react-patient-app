@@ -1,57 +1,27 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { useParams, useHistory } from '../react-router'
 import { List, ListItem, Text, Body, Right, Icon, Button, View, Spinner } from 'native-base'
-import {
-    useFhirContext,
-    Report,
-    ReportType,
-    ReportFactory,
-    QuestionnaireResponse,
-} from 'smartmarkers'
-import { Dimensions, StyleSheet } from 'react-native'
-import { LineChart } from 'react-native-chart-kit'
+import { useFhirContext, Report, ReportType, ReportFactory, PromisLineChart } from 'smartmarkers'
+import { StyleSheet } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { Store } from '../store/models'
+import { setReports, setSelectedReport } from '../store/main/actions'
 
 interface RouteParams {
     completed: string
     srId: string
     qId: string
-    instrumentTitle: string
 }
 
 const TaskScreen: React.FC<any> = props => {
     const { user, server } = useFhirContext()
-    const { srId, qId, completed, instrumentTitle } = useParams<RouteParams>()
+    const { srId, qId, completed } = useParams<RouteParams>()
     const history = useHistory()
+    const reports = useSelector((store: Store) => store.root.reports)
+    const dispatch = useDispatch()
+    const selectedTask = useSelector((store: Store) => store.root.selectedTask)
 
     const [isReady, setIsReady] = React.useState(false)
-    const [items, setItems] = React.useState<Report[] | undefined>([])
-    const [chartData, setChartData] = useState([])
-
-    useEffect(() => {
-        if (!items && !items!.length) return
-        const data: any = []
-        items?.forEach((report: Report) => {
-            const questionnaireResponse = report as QuestionnaireResponse
-            if (questionnaireResponse.extension) {
-                const scores: any = questionnaireResponse.extension.filter(
-                    (el: any) =>
-                        el.url === 'http://hl7.org/fhir/StructureDefinition/questionnaire-scores'
-                )
-
-                if (scores[0]) {
-                    const theta = scores[0].extension.filter(
-                        (el: any) =>
-                            el.url ===
-                            'http://hl7.org/fhir/StructureDefinition/questionnaire-scores/theta'
-                    )[0]
-                    theta && data.push(theta.valueDecimal * 10 + 50)
-                }
-            } else {
-                data.push(Math.random() * 10 + 50)
-            }
-        })
-        setChartData(data)
-    }, [items])
 
     React.useEffect(() => {
         const loadItems = async () => {
@@ -63,7 +33,7 @@ const TaskScreen: React.FC<any> = props => {
                 )
                 const factory = new ReportFactory(server)
                 const reports = items.map((i: any) => factory.createReport(i))
-                setItems(reports)
+                dispatch(setReports(reports))
             }
 
             setIsReady(true)
@@ -72,6 +42,7 @@ const TaskScreen: React.FC<any> = props => {
     }, [srId, user, user?.id])
 
     const onItemPress = (item: Report) => {
+        dispatch(setSelectedReport(item))
         history.push(`/response/${item.id}`)
     }
 
@@ -96,12 +67,12 @@ const TaskScreen: React.FC<any> = props => {
     )
 
     const getRequestList = () => {
-        if (!isReady) {
+        if (!isReady && !reports.length) {
             return <Spinner />
         }
 
-        if (items?.length) {
-            return <>{items?.map((item, index) => renderItem(item, index))}</>
+        if (reports?.length) {
+            return <>{reports?.map((item, index) => renderItem(item, index))}</>
         } else {
             return (
                 <ListItem>
@@ -116,7 +87,7 @@ const TaskScreen: React.FC<any> = props => {
     return (
         <List>
             <View style={{ margin: 15 }}>
-                <Text style={styles.headerTitle}>{instrumentTitle}</Text>
+                <Text style={styles.headerTitle}>{selectedTask?.instrument?.getTitle()}</Text>
                 <Text note>Questionnaire</Text>
                 {completed == 'false' && (
                     <Button onPress={startQuest} style={styles.startButton}>
@@ -124,37 +95,7 @@ const TaskScreen: React.FC<any> = props => {
                     </Button>
                 )}
             </View>
-            <View style={{ marginLeft: 15, marginRight: 15 }}>
-                {!!chartData.length && (
-                    <LineChart
-                        data={{
-                            labels: [],
-                            datasets: [
-                                {
-                                    data: chartData,
-                                },
-                            ],
-                        }}
-                        width={Dimensions.get('window').width - 30} // from react-native
-                        height={220}
-                        chartConfig={{
-                            backgroundColor: '#e26a00',
-                            backgroundGradientFrom: '#fb8c00',
-                            backgroundGradientTo: '#ffa726',
-                            decimalPlaces: 2, // optional, defaults to 2dp
-                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                            style: {
-                                borderRadius: 16,
-                            },
-                        }}
-                        bezier
-                        style={{
-                            marginVertical: 8,
-                            borderRadius: 16,
-                        }}
-                    />
-                )}
-            </View>
+            <PromisLineChart responses={reports} />
             <ListItem itemHeader>
                 <Text>RESPONSES</Text>
             </ListItem>

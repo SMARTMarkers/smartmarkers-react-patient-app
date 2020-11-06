@@ -12,9 +12,11 @@ import {
     Title,
     Right,
     Body,
+    Text,
 } from 'native-base'
 import { FooterRoutes } from '../../navigation/FooterRoutes'
 import { useFhirContext } from 'smartmarkers'
+import { Dimensions } from 'react-native'
 
 interface MainProps {
     children: React.ReactNode
@@ -49,9 +51,7 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
                     )}
                 </Left>
                 <Body style={{ flexGrow: 5 }}>
-                    {<Title style={{ alignSelf: 'center' }}>
-                        Hello, {user?.name}
-                    </Title>}
+                    {<Title style={{ alignSelf: 'center' }}>Hello, {user?.name}</Title>}
                 </Body>
                 <Right style={{ flexGrow: 1 }}>
                     {isAuthenticated && (
@@ -62,11 +62,19 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
                 </Right>
             </Header>
             <Content>{children}</Content>
-            {isFooterRoute && (
-                <Footer style={{ backgroundColor: '#002a78' }}>
-                    <FooterTabNavigator />
-                </Footer>
-            )}
+            <Footer
+                style={{
+                    backgroundColor: '#002a78',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: isFooterRoute ? 85 : 35,
+                }}
+            >
+                {isFooterRoute && <FooterTabNavigator />}
+                <Text style={{ color: 'white', paddingLeft: 30, paddingTop: 5, paddingBottom: 5 }}>
+                    Copyright Boston Children’s Hospital
+                </Text>
+            </Footer>
         </Container>
     )
 }

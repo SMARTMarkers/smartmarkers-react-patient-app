@@ -1,32 +1,39 @@
 import React from 'react'
 import { useHistory } from '../react-router'
 import { List, ListItem, Text, Body, Right, Icon } from 'native-base'
-import { useFhirContext, RequestList, Task, TaskScheduleStatus } from 'smartmarkers'
+import { Task, TaskScheduleStatus } from 'smartmarkers'
 import { StyleSheet } from 'react-native'
+import RequestList from '../components/RequestList'
+import { useDispatch } from 'react-redux'
+import { setReports, setSelectedTask } from '../store/main/actions'
 
 const DashboardScreen: React.FC<any> = () => {
-    const { user } = useFhirContext()
     const history = useHistory()
+    const dispatch = useDispatch()
 
     const onItemPress = async (item: Task) => {
+        dispatch(setSelectedTask(item))
+        dispatch(setReports([]))
         history.push(`history/${item.request?.id}/${item.instrument?.id}/false/${item.getTitle()}`)
     }
 
-    const renderItem = (
-        item: Task,
-        key: any,
-        onItemPress: (item: Task) => void,
-        isLast: boolean
-    ) => (
+    const renderItem = (item: Task, key: any, onItemPress: (item: Task) => void) => (
         <ListItem key={key} onPress={() => onItemPress(item)} noBorder style={styles.listItem}>
             <Body>
-                <Text note>#{item.request.id} | { new Date(item.request?.meta?.lastUpdated).toLocaleDateString('en-US')} </Text>        
-                <Text>Instrument: <Text style={styles.title}>{item.getTitle()}</Text></Text>
-                <Text>Requested by: { item.request.getRequester() } </Text>
-          </Body>
-          <Right>
-                 <Icon style={{ color: '#002a78' }} active name="arrow-forward" />
-          </Right>
+                <Text note>
+                    #{item?.request?.id} |{' '}
+                    {new Date(item?.request?.meta?.lastUpdated as string).toLocaleDateString(
+                        'en-US'
+                    )}{' '}
+                </Text>
+                <Text>
+                    Instrument: <Text style={styles.title}>{item.getTitle()}</Text>
+                </Text>
+                <Text>Requested by: {item?.request?.getRequester()} </Text>
+            </Body>
+            <Right>
+                <Icon style={{ color: '#002a78' }} active name="arrow-forward" />
+            </Right>
         </ListItem>
     )
 
@@ -47,12 +54,6 @@ const DashboardScreen: React.FC<any> = () => {
                     TaskScheduleStatus.Overdue,
                 ]}
             />
-
-            {/*<ListItem onPress={() => history.push('/manual')}>
-                <Body>
-                    <Text>Manual DEMO</Text>
-                </Body>
-            </ListItem>*/}
         </List>
     )
 }

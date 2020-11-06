@@ -1,4 +1,5 @@
-export const baseUrl = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiJkYmY5Nzk4ZS00YjUyLTRjZDktYTllYi1lYzM2MTQ5Yzg1OWEifQ'
+export const baseUrl =
+    'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImoiOiIxIiwiYiI6IjMyNmI0Njc1LTBiYzgtNGRiZC1iNDA2LWE1NTY0YzI4MjQwMSJ9'
 
 export const discovery = {
     authorizationEndpoint: `${baseUrl}/auth/authorize`,
