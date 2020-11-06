@@ -1,6 +1,6 @@
 import React from 'react'
 import { FooterTab, Button, Icon, Text } from 'native-base'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from '../react-router'
 import { FooterRoutes } from './FooterRoutes'
 
 const FooterTabNavigator: React.FC = () => {

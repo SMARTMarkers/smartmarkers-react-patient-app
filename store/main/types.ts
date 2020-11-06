@@ -1,0 +1,4 @@
+export const SET_TASKS = 'SET_TASKS'
+export const SET_REPORTS = 'SET_REPORTS'
+export const SET_SELECTED_REPORT = 'SET_SELECTED_REPORT'
+export const SET_SELECTED_TASK = 'SET_SELECTED_TASK'

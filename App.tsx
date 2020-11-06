@@ -6,6 +6,10 @@ import * as Font from 'expo-font'
 import { Ionicons } from '@expo/vector-icons'
 import * as Linking from 'expo-linking'
 import { FhirProvider, FhirProviderProps } from 'smartmarkers'
+import { serverUrl } from './urls'
+import { Provider } from 'react-redux'
+
+import { store } from './store'
 
 const App: React.FC = () => {
     const [isReady, setIsReady] = useState(false)
@@ -27,9 +31,8 @@ const App: React.FC = () => {
     }
 
     const redirectUri = Linking.makeUrl('auth-callback')
-    
-    const iss =
-         'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImoiOiIxIiwiYiI6IjMyNmI0Njc1LTBiYzgtNGRiZC1iNDA2LWE1NTY0YzI4MjQwMSJ9/fhir'
+
+    const iss = serverUrl
     const scope =
         'openid fhirUser offline_access user/*.* patient/*.* launch/encounter launch/patient profile'
     const settings: FhirProviderProps = {
@@ -46,9 +49,11 @@ const App: React.FC = () => {
 
     return (
         <FhirProvider {...settings}>
-            <Router>
-                <Routes />
-            </Router>
+            <Provider store={store}>
+                <Router>
+                    <Routes />
+                </Router>
+            </Provider>
         </FhirProvider>
     )
 }

@@ -145,7 +145,8 @@
                                     "display": "pT category"
                                 }
                             ],
-                            "type": "choice"
+                            "type": "choice",
+                            "answerValueSet": "http://hl7.org/fhir/ValueSet/yesnodontknow"
                         }
                     ]
                 }

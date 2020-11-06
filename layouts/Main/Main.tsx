@@ -12,9 +12,11 @@ import {
     Title,
     Right,
     Body,
+    Text,
 } from 'native-base'
 import { FooterRoutes } from '../../navigation/FooterRoutes'
 import { useFhirContext } from 'smartmarkers'
+import { Dimensions } from 'react-native'
 
 interface MainProps {
     children: React.ReactNode
@@ -40,33 +42,39 @@ const Main: React.FC<MainProps> = ({ ...props }) => {
 
     return (
         <Container>
-            <Header noLeft={isFooterRoute}>
-                {showBackButton && (
-                    <Left>
+            <Header style={{ backgroundColor: '#002a78' }} noLeft={isFooterRoute}>
+                <Left style={{ flexGrow: 1 }}>
+                    {showBackButton && (
                         <Button transparent onPress={onPress}>
                             <Icon name="md-arrow-back" />
                         </Button>
-                    </Left>
-                )}
-                <Body>
-                    <Title style={{ alignSelf: 'center' }}>
-                        {isPatient ? 'Patient App' : 'Practitioner App'}
-                    </Title>
+                    )}
+                </Left>
+                <Body style={{ flexGrow: 5 }}>
+                    {<Title style={{ alignSelf: 'center' }}>Hello, {user?.name}</Title>}
                 </Body>
-                {isAuthenticated && (
-                    <Right>
+                <Right style={{ flexGrow: 1 }}>
+                    {isAuthenticated && (
                         <Button transparent onPress={onPersonPress}>
                             <Icon name="person" />
                         </Button>
-                    </Right>
-                )}
+                    )}
+                </Right>
             </Header>
             <Content>{children}</Content>
-            {isFooterRoute && (
-                <Footer>
-                    <FooterTabNavigator />
-                </Footer>
-            )}
+            <Footer
+                style={{
+                    backgroundColor: '#002a78',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: isFooterRoute ? 85 : 35,
+                }}
+            >
+                {isFooterRoute && <FooterTabNavigator />}
+                <Text style={{ color: 'white', paddingLeft: 30, paddingTop: 5, paddingBottom: 5 }}>
+                    Copyright Boston Children’s Hospital
+                </Text>
+            </Footer>
         </Container>
     )
 }

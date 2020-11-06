@@ -1,8 +1,7 @@
 import React from 'react'
 import { useHistory } from '../react-router'
 import { List, ListItem, Text, Body } from 'native-base'
-import { useFhirContext } from 'smartmarkers'
-import { RequestList, Task, TaskScheduleStatus } from 'smartmarkers'
+import { useFhirContext, RequestList, Task, TaskScheduleStatus } from 'smartmarkers'
 
 const CompletedScreen: React.FC<any> = () => {
     const { user } = useFhirContext()
