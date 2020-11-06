@@ -30,7 +30,7 @@
         "react-router-native": "^5.2.0",
         "redux": "^4.0.5",
         "redux-logger": "^3.0.6",
-        "smartmarkers": "git+ssh://git@github.com/SMARTMarkers/smartmarkers-react.git#develop"
+        "smartmarkers": "git+ssh://git@github.com/SMARTMarkers/smartmarkers-react.git"
     },
     "devDependencies": {
         "@babel/core": "^7.8.6",
