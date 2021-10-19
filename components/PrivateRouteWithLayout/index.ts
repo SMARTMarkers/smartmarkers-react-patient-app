@@ -1,1 +1,1 @@
-export { default } from './PrivateRouteWithLayout'
+export { default } from "./PrivateRouteWithLayout";
