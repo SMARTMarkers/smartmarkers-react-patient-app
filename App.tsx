@@ -42,8 +42,8 @@ const App: React.FC = () => {
     redirectUri,
     promisSettings: {
       url: "https://mss.fsm.northwestern.edu/AC_API/2018-10/",
-      identifier: "2F984419-5008-4E42-8210-68592B418233",
-      token: "21A673E8-9498-4DC2-AAB6-07395029A778",
+      identifier: "",
+      token: "",
     },
   };
 
