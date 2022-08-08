@@ -23,10 +23,7 @@
       "display": "Weight & Height tracking panel"
     }
   ],
-  "subjectType": [
-    "Patient",
-    "Person"
-  ],
+  "subjectType": ["Patient", "Person"],
   "item": [
     {
       "extension": [
@@ -172,7 +169,7 @@
           "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-calculatedExpression",
           "valueExpression": {
             "description": "BMI calculation",
-            "language" : "text/fhirpath",
+            "language": "text/fhirpath",
             "expression": "((item.where(linkId='/29463-7').answer.valueQuantity.value/item.where(linkId='/8302-2').answer.valueQuantity.value/item.where(linkId='/8302-2').answer.valueQuantity.value/0.0254/0.0254 *10 +0.5) div 1)/10"
           }
         }

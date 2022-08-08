@@ -1,31 +1,38 @@
-import React from 'react'
-import { Route, Redirect } from '../../react-router'
+import React from "react";
+import { Route, Redirect } from "../../react-router";
 
 interface RouteWithLayoutProps {
-    component: React.ComponentClass<any> | React.FunctionComponent<any>
-    layout: React.ComponentClass<any> | React.FunctionComponent<any>
-    path: string
-    exact?: boolean
-    isAuthenticated: boolean
+  component: React.ComponentClass<any> | React.FunctionComponent<any>;
+  layout: React.ComponentClass<any> | React.FunctionComponent<any>;
+  path: string;
+  exact?: boolean;
+  isAuthenticated: boolean;
 }
 
-const PrivateRouteWithLayout: React.FC<RouteWithLayoutProps> = ({ ...props }) => {
-    const { layout: Layout, component: Component, isAuthenticated, ...rest } = props
+const PrivateRouteWithLayout: React.FC<RouteWithLayoutProps> = ({
+  ...props
+}) => {
+  const {
+    layout: Layout,
+    component: Component,
+    isAuthenticated,
+    ...rest
+  } = props;
 
-    if (!isAuthenticated) {
-        return <Redirect to="/login" />
-    }
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
 
-    return (
-        <Route
-            {...rest}
-            render={(matchProps: any) => (
-                <Layout>
-                    <Component {...matchProps} />
-                </Layout>
-            )}
-        />
-    )
-}
+  return (
+    <Route
+      {...rest}
+      render={(matchProps: any) => (
+        <Layout>
+          <Component {...matchProps} />
+        </Layout>
+      )}
+    />
+  );
+};
 
-export default PrivateRouteWithLayout
+export default PrivateRouteWithLayout;

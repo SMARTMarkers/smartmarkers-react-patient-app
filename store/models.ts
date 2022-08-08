@@ -1,5 +1,5 @@
-import { RootState } from './main/models'
+import { RootState } from "./main/models";
 
 export interface Store {
-    root: RootState
+  root: RootState;
 }

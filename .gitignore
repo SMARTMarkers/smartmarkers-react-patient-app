@@ -8,10 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-node_modules
-.expo
-.vscode
-.idea
+.vscode/*
 
 # macOS
 .DS_Store
